@@ -11,22 +11,21 @@ class Product:
         self.quantity = quantity
 
 
-
 class Category:
 
     name: str
     description: str
     products: list
 
-    total_categories = 0
-    total_products = 0
+    category_count = 0
+    product_count = 0
 
     def __init__(self, name, description):
         self.name = name
         self.description = description
         self.products = []
-        Category.total_categories += 1
+        Category.category_count += 1
 
     def add_product(self, product):
         self.products.append(product)
-        Category.total_products += 1
+        Category.product_count += 1
