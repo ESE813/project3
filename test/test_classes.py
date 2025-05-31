@@ -43,8 +43,16 @@ def test_add_product(category, product):
     assert Category.product_count == 2
     assert (
         category.products[0]
-        == f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт.\n"
+        == f"{product.name}, {product.price} руб. Остаток: {product.quantity} шт."
     )
+
+
+def test_product_add_():
+    product_a = Product("Товар A", "Описание A", 100, 10)
+    product_b = Product("Товар B", "Описание B", 200, 2)
+
+    total_value = product_a + product_b
+    assert total_value == 1400  # 100 * 10 + 200 * 2 = 1400
 
 
 def test_new_product(product_data):
@@ -64,3 +72,20 @@ def test_category_count():
 def test_price_setter(product):
     product.price = 1500.00
     assert product.price == 1500.00
+
+
+def test_product_str_():
+    product = Product("Товар 1", "Описание товара 1", 80, 15)
+    assert str(product) == "Товар 1, 80 руб. Остаток: 15 шт."
+
+    product2 = Product("Товар 2", "Описание товара 2", 120, 10)
+    assert str(product2) == "Товар 2, 120 руб. Остаток: 10 шт."
+
+
+def test_category_str_():
+    product1 = Product("Товар 1", "Описание товара 1", 80, 15)
+    product2 = Product("Товар 2", "Описание товара 2", 120, 10)
+    category = Category("Категория 1", "Описание категории 1", [product1, product2])
+
+    assert str(category) == "Категория 1, количество продуктов: 25 шт."
+
