@@ -1,5 +1,5 @@
 import pytest
-from src.classes import Category, Product
+from src.classes import Category, Product, Smartphone, LawnGrass
 
 
 @pytest.fixture
@@ -55,6 +55,39 @@ def test_product_add_():
     assert total_value == 1400  # 100 * 10 + 200 * 2 = 1400
 
 
+def test_add_product_different_types():
+    prod = Product("Товар A", "Описание A", 100, 10)
+    with pytest.raises(TypeError):
+        prod.__add__("Not a product")
+
+
+def test_smartphone():
+    smartphone = Smartphone(
+        "Iphone 15", "512GB, Gray space", 210000.0, 8, 98.2, "15", 512, "Gray space"
+    )
+    assert smartphone.efficiency == 98.2
+    assert smartphone.model == "15"
+    assert smartphone.memory == 512
+    assert smartphone.color == "Gray space"
+
+
+def test_grass():
+    grass = LawnGrass(
+        "Газонная трава",
+        "Элитная трава для газона",
+        500.0,
+        20,
+        "Россия",
+        "7 дней",
+        "Зеленый",
+    )
+    assert grass.name == "Газонная трава"
+    assert grass.description == "Элитная трава для газона"
+    assert grass.country == "Россия"
+    assert grass.germination_period == "7 дней"
+    assert grass.color == "Зеленый"
+
+
 def test_new_product(product_data):
     new_product = Product.new_product(product_data)
     assert new_product.name == product_data["name"]
@@ -86,6 +119,16 @@ def test_category_str_():
     product1 = Product("Товар 1", "Описание товара 1", 80, 15)
     product2 = Product("Товар 2", "Описание товара 2", 120, 10)
     category = Category("Категория 1", "Описание категории 1", [product1, product2])
-
     assert str(category) == "Категория 1, количество продуктов: 25 шт."
+
+
+
+def test_category_add_product():
+    category = Category("Electronics", "Devices and gadgets", [])
+    smartphone = Smartphone(
+        "Iphone 15", "512GB, Gray space", 210000.0, 8, 98.2, "15", 512, "Gray space"
+    )
+    category.add_product(smartphone)
+    assert len(category.products) == 1
+    assert Category.product_count > 0
 
