@@ -1,4 +1,3 @@
-
 class Product:
     name: str
     description: str
@@ -37,6 +36,38 @@ class Product:
     def __add__(self, other):
         if isinstance(other, Product):
             return (self.price * self.quantity) + (other.price * other.quantity)
+        if type(self) is not type(other):
+            raise TypeError("Нельзя складывать продукты разных типов.")
+
+
+class Smartphone(Product):
+    efficiency: int
+    model: str
+    memory: int
+    color: str
+
+    def __init__(
+        self, name, description, price, quantity, efficiency, model, memory, color
+    ):
+        super().__init__(name, description, price, quantity)
+        self.efficiency = efficiency
+        self.model = model
+        self.memory = memory
+        self.color = color
+
+
+class LawnGrass(Product):
+    country: str
+    germination_period: str
+    color: str
+
+    def __init__(
+        self, name, description, price, quantity, country, germination_period, color
+    ):
+        super().__init__(name, description, price, quantity)
+        self.country = country
+        self.germination_period = germination_period
+        self.color = color
 
 
 
@@ -60,6 +91,8 @@ class Category:
         if isinstance(product, Product):
             self.__products.append(product)
             Category.product_count += 1
+        else:
+            raise TypeError
 
     @property
     def products(self):
@@ -68,5 +101,3 @@ class Category:
     def __str__(self):
         total_quantity = sum(product.quantity for product in self.__products)
         return f"{self.name}, количество продуктов: {total_quantity} шт."
-
-
