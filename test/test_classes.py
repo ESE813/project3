@@ -122,6 +122,7 @@ def test_category_str_():
     assert str(category) == "Категория 1, количество продуктов: 25 шт."
 
 
+
 def test_category_add_product():
     category = Category("Electronics", "Devices and gadgets", [])
     smartphone = Smartphone(
