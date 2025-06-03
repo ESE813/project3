@@ -131,3 +131,4 @@ def test_category_add_product():
     category.add_product(smartphone)
     assert len(category.products) == 1
     assert Category.product_count > 0
+
