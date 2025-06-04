@@ -1,14 +1,32 @@
-class Product:
-    name: str
-    description: str
-    price: float
-    quantity: str
+from abc import ABC, abstractmethod
 
+
+class BaseProduct(ABC):
+    """Базовый абстрактный класс для всех продуктов,
+    представляющий общую функциональность"""
+
+    @abstractmethod
+    def __init__(self, *args, **kwargs):
+        pass
+
+
+class ProductMixin:
     def __init__(self, name, description, price, quantity):
         self.name = name
         self.description = description
         self.price = price
         self.quantity = quantity
+        print(repr(self))
+
+    def __repr__(self):
+        return f"{self.__class__.__name__}({self.name}, {self.description}, {self.price}, {self.quantity})"
+
+
+class Product(BaseProduct, ProductMixin):
+    name: str
+    description: str
+    price: float
+    quantity: str
 
     @classmethod
     def new_product(cls, product_data=dict):
@@ -18,6 +36,13 @@ class Product:
             price=product_data["price"],
             quantity=product_data["quantity"],
         )
+
+    def __init__(self, name, description, price, quantity):
+        super().__init__(name, description, price, quantity)
+        self.name = name
+        self.description = description
+        self.price = price
+        self.quantity = quantity
 
     @property
     def price(self):
@@ -68,7 +93,6 @@ class LawnGrass(Product):
         self.country = country
         self.germination_period = germination_period
         self.color = color
-
 
 
 class Category:

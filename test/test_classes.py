@@ -1,5 +1,5 @@
 import pytest
-from src.classes import Category, Product, Smartphone, LawnGrass
+from src.classes import Category, Product, Smartphone, LawnGrass, ProductMixin
 
 
 @pytest.fixture
@@ -122,7 +122,6 @@ def test_category_str_():
     assert str(category) == "Категория 1, количество продуктов: 25 шт."
 
 
-
 def test_category_add_product():
     category = Category("Electronics", "Devices and gadgets", [])
     smartphone = Smartphone(
@@ -132,3 +131,10 @@ def test_category_add_product():
     assert len(category.products) == 1
     assert Category.product_count > 0
 
+
+def test_product_mixin_attributes():
+    product = ProductMixin("Продукт1", "Описание продукта", 1200, 10)
+    assert product.name == "Продукт1"
+    assert product.description == "Описание продукта"
+    assert product.price == 1200
+    assert product.quantity == 10
