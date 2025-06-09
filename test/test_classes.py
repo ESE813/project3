@@ -138,3 +138,25 @@ def test_product_mixin_attributes():
     assert product.description == "Описание продукта"
     assert product.price == 1200
     assert product.quantity == 10
+
+
+def test_average_price_with_products():
+    category = Category("Test Category", "Description")
+    category.add_product(Product("Продукт1", "Описание продукта", 100.0, 1))
+    category.add_product(Product("Продукт2", "Описание продукта", 200.0, 1))
+    category.add_product(Product("Продукт3", "Описание продукта", 300.0, 1))
+
+    assert category.avg_price() == 200.0  # (100 + 200 + 300) / 3 = 200
+
+
+def test_average_price_empty_category():
+    empty_category = Category("Empty Category", "Description")
+    assert empty_category.avg_price() == 0  # Не должно быть продуктов, возврат 0
+
+
+def test_average_price_one_product():
+    single_product_category = Category("One Product Category", "Description")
+    single_product_category.add_product(
+        Product("Продукт1", "Описание продукта", 150.0, 1)
+    )
+    assert single_product_category.avg_price() == 150.0

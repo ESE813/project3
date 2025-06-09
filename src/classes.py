@@ -1,3 +1,4 @@
+from typing import Dict, Any
 from abc import ABC, abstractmethod
 
 
@@ -26,23 +27,27 @@ class Product(BaseProduct, ProductMixin):
     name: str
     description: str
     price: float
-    quantity: str
+    quantity: int
 
     @classmethod
-    def new_product(cls, product_data=dict):
+    def new_product(cls, product_data: Dict[str, Any] = None):
+        if product_data is None:
+            product_data = {}
         return cls(
-            name=product_data["name"],
-            description=product_data["description"],
-            price=product_data["price"],
-            quantity=product_data["quantity"],
+            name=product_data.get("name"),
+            description=product_data.get("description"),
+            price=product_data.get("price"),
+            quantity=product_data.get("quantity"),
         )
 
     def __init__(self, name, description, price, quantity):
-        super().__init__(name, description, price, quantity)
+        if quantity <= 0:
+            raise ValueError("Товар с нулевым количеством не может быть добавлен.")
         self.name = name
         self.description = description
-        self.price = price
+        self.__price = price
         self.quantity = quantity
+        super().__init__(name, description, price, quantity)
 
     @property
     def price(self):
@@ -99,15 +104,15 @@ class Category:
 
     name: str
     description: str
-    products: list
+    __products: list
 
     category_count = 0
     product_count = 0
 
-    def __init__(self, name, description, products):
+    def __init__(self, name, description, products=None):
         self.name = name
         self.description = description
-        self.__products = products if products else []
+        self.__products = products if products is not None else []
 
         Category.category_count += 1
 
@@ -125,3 +130,11 @@ class Category:
     def __str__(self):
         total_quantity = sum(product.quantity for product in self.__products)
         return f"{self.name}, количество продуктов: {total_quantity} шт."
+
+    def avg_price(self):
+        try:
+            total_price = sum(product.price for product in self.__products)
+            average = total_price / len(self.__products)
+            return average
+        except ZeroDivisionError:
+            return 0
