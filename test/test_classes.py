@@ -160,3 +160,4 @@ def test_average_price_one_product():
         Product("Продукт1", "Описание продукта", 150.0, 1)
     )
     assert single_product_category.avg_price() == 150.0
+
